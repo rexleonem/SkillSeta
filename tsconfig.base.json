@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": true,
+    "baseUrl": ".",
+    "paths": {
+      "@skillseta/ui": ["packages/ui/src/index.ts"],
+      "@skillseta/ui/*": ["packages/ui/src/*"],
+      "@skillseta/types": ["packages/types/src/index.ts"],
+      "@skillseta/types/*": ["packages/types/src/*"],
+      "@skillseta/utils": ["packages/utils/src/index.ts"],
+      "@skillseta/utils/*": ["packages/utils/src/*"],
+      "@skillseta/config": ["packages/config/src/index.ts"],
+      "@skillseta/api-client": ["packages/api-client/src/index.ts"],
+      "@skillseta/ai-sdk": ["packages/ai-sdk/src/index.ts"]
+    }
+  }
+}

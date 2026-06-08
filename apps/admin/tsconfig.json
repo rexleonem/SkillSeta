@@ -1,0 +1,19 @@
+{
+  "extends": "../../packages/tsconfig/base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@skillseta/ui": ["../../packages/ui/src/index.ts"],
+      "@skillseta/ui/*": ["../../packages/ui/src/*"],
+      "@skillseta/types": ["../../packages/types/src/index.ts"],
+      "@skillseta/types/*": ["../../packages/types/src/*"],
+      "@skillseta/utils": ["../../packages/utils/src/index.ts"],
+      "@skillseta/utils/*": ["../../packages/utils/src/*"],
+      "@skillseta/api-client": ["../../packages/api-client/src/index.ts"],
+      "@skillseta/ai-sdk": ["../../packages/ai-sdk/src/index.ts"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "vite.config.ts"]
+}

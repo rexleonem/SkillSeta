@@ -1,0 +1,22 @@
+{
+  "extends": "../../packages/tsconfig/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "types": ["react-native", "nativewind/types"],
+    "paths": {
+      "@skillseta/ui": ["../../packages/ui/src/index.ts"],
+      "@skillseta/ui/*": ["../../packages/ui/src/*"],
+      "@skillseta/types": ["../../packages/types/src/index.ts"],
+      "@skillseta/types/*": ["../../packages/types/src/*"],
+      "@skillseta/utils": ["../../packages/utils/src/index.ts"],
+      "@skillseta/utils/*": ["../../packages/utils/src/*"],
+      "@skillseta/api-client": ["../../packages/api-client/src/index.ts"],
+      "@skillseta/ai-sdk": ["../../packages/ai-sdk/src/index.ts"],
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["app/**/*.ts", "app/**/*.tsx", "**/*.ts", "**/*.tsx", "nativewind-env.d.ts"],
+  "exclude": ["node_modules"]
+}

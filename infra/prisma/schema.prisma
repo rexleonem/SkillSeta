@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  admin
+  user
+}
+
+enum LearningPathStatus {
+  draft
+  active
+  completed
+  archived
+}
+
+enum ProjectStatus {
+  draft
+  active
+  submitted
+  reviewed
+  archived
+}
+
+enum AssessmentStatus {
+  pending
+  passed
+  failed
+}
+
+enum AIProvider {
+  deepseek
+  gemini
+  groq
+}
+
+enum AIInteractionType {
+  explanation
+  planning
+  quiz
+  evaluation
+  project
+  support
+}
+
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  name          String
+  passwordHash  String
+  role          Role            @default(user)
+  profile       Profile?
+  learningPaths LearningPath[]
+  progress      Progress[]
+  assessments   Assessment[]
+  projects      Project[]
+  aiInteractions AIInteraction[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([role])
+}
+
+model Profile {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio        String?
+  avatarUrl  String?
+  headline   String?
+  timezone   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Skill {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  description String
+  category    String
+  nodes       SkillNode[]
+  paths       LearningPath[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([category])
+}
+
+model SkillNode {
+  id             String            @id @default(cuid())
+  skillId        String
+  skill          Skill             @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  title          String
+  description    String
+  difficulty     Int               @default(1)
+  masteryScore   Int               @default(0)
+  masteryTarget  Int               @default(80)
+  orderIndex     Int               @default(0)
+  prerequisites  SkillDependency[] @relation("SkillNodePrereq")
+  unlocks        SkillDependency[] @relation("SkillNodeUnlock")
+  progress       Progress[]
+  assessments    Assessment[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@index([skillId, orderIndex])
+}
+
+model SkillDependency {
+  id               String    @id @default(cuid())
+  skillNodeId      String
+  prerequisiteId   String
+  skillNode        SkillNode @relation("SkillNodeUnlock", fields: [skillNodeId], references: [id], onDelete: Cascade)
+  prerequisite     SkillNode @relation("SkillNodePrereq", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+  createdAt        DateTime  @default(now())
+
+  @@unique([skillNodeId, prerequisiteId])
+  @@index([prerequisiteId])
+}
+
+model LearningPath {
+  id         String             @id @default(cuid())
+  userId     String
+  skillId    String
+  status     LearningPathStatus @default(draft)
+  readiness  Int                @default(0)
+  metadata   Json?
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill      Skill              @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+
+  @@index([userId, status])
+  @@index([skillId, status])
+}
+
+model Progress {
+  id            String     @id @default(cuid())
+  userId        String
+  skillNodeId   String
+  masteryScore  Int        @default(0)
+  completedAt   DateTime?
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillNode     SkillNode  @relation(fields: [skillNodeId], references: [id], onDelete: Cascade)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@unique([userId, skillNodeId])
+  @@index([skillNodeId, masteryScore])
+}
+
+model Assessment {
+  id            String           @id @default(cuid())
+  userId        String
+  skillNodeId   String
+  status        AssessmentStatus @default(pending)
+  score         Int              @default(0)
+  feedback      String?
+  rubric        Json?
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillNode     SkillNode        @relation(fields: [skillNodeId], references: [id], onDelete: Cascade)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([userId, status])
+  @@index([skillNodeId, status])
+}
+
+model Project {
+  id            String        @id @default(cuid())
+  userId        String
+  title         String
+  description   String
+  status        ProjectStatus @default(draft)
+  rubric        Json?
+  repositoryUrl String?
+  submissionUrl String?
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([userId, status])
+}
+
+model AIInteraction {
+  id            String         @id @default(cuid())
+  userId        String?
+  user          User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  provider      AIProvider
+  interactionType AIInteractionType
+  prompt        String
+  response      String
+  metadata      Json?
+  embedding     Bytes?
+  createdAt     DateTime       @default(now())
+
+  @@index([userId, provider, interactionType])
+  @@index([createdAt])
+}
