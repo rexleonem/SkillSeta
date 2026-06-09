@@ -12,6 +12,7 @@
   "dependencies": {
     "@skillseta/ai-sdk": "workspace:*",
     "@skillseta/api-client": "workspace:*",
+    "@skillseta/ui": "workspace:*",
     "@skillseta/types": "workspace:*",
     "@tanstack/react-query": "^5.85.3",
     "clsx": "^2.1.1",
