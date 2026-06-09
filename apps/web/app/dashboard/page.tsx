@@ -1,5 +1,5 @@
-import { DashboardWidget } from "@skillseta/ui";
-import { SkillNode } from "@skillseta/ui";
+import { DashboardWidget } from "@skillseta/ui/components/dashboard-widget";
+import { SkillNode } from "@skillseta/ui/components/skill-node";
 
 export default function DashboardPage() {
   return (

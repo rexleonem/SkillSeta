@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@skillseta/api-client": "workspace:*",
-    "@skillseta/types": "workspace:*",
+    "@skillseta/api-client": "file:../../packages/api-client",
+    "@skillseta/types": "file:../../packages/types",
     "@tanstack/react-table": "^8.21.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
