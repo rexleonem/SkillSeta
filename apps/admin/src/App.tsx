@@ -57,7 +57,8 @@ export default function App() {
               <tr key={row.id} className="border-b border-white/5">
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="px-4 py-3 text-slate-200">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext()) ?? cell.getValue()}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext()) ??
+                      String(cell.getValue())}
                   </td>
                 ))}
               </tr>
