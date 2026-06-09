@@ -2,7 +2,7 @@
   "name": "skillseta",
   "private": true,
   "version": "0.1.0",
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@10.12.4",
   "workspaces": [
     "apps/*",
     "services/*",
