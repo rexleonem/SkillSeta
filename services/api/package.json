@@ -6,9 +6,9 @@
   "main": "./dist/server.js",
   "types": "./dist/server.d.ts",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "node api.js && tsx watch src/server.ts",
     "build": "tsup src/server.ts --format esm --dts",
-    "start": "node dist/server.js",
+    "start": "node api.js && node dist/server.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate --schema ../../infra/prisma/schema.prisma",

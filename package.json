@@ -9,7 +9,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "turbo run dev --parallel",
+    "dev": "node api.js && turbo run dev --parallel",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "format": "prettier --write .",
