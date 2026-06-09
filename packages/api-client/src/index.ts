@@ -14,36 +14,46 @@ export interface ApiClientOptions {
   accessToken?: string;
 }
 
-export function createApiClient(options: ApiClientOptions) {
-  const headers = () =>
-    options.accessToken ? { Authorization: `Bearer ${options.accessToken}` } : {};
+function authHeaders(accessToken?: string): HeadersInit | undefined {
+  return accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined;
+}
 
+export function createApiClient(options: ApiClientOptions) {
   return {
     auth: {
-      me: () => apiJson<User>(`${options.baseUrl}/users/me`, { headers: headers() })
+      me: () => apiJson<User>(`${options.baseUrl}/users/me`, { headers: authHeaders(options.accessToken) })
     },
     skills: {
-      list: () => apiJson<Skill[]>(`${options.baseUrl}/skills`, { headers: headers() })
+      list: () => apiJson<Skill[]>(`${options.baseUrl}/skills`, { headers: authHeaders(options.accessToken) })
     },
     learning: {
       listPaths: () =>
-        apiJson<LearningPath[]>(`${options.baseUrl}/learning/paths`, { headers: headers() })
+        apiJson<LearningPath[]>(`${options.baseUrl}/learning/paths`, {
+          headers: authHeaders(options.accessToken)
+        })
     },
     progress: {
-      list: () => apiJson<Progress[]>(`${options.baseUrl}/progress`, { headers: headers() })
+      list: () => apiJson<Progress[]>(`${options.baseUrl}/progress`, {
+        headers: authHeaders(options.accessToken)
+      })
     },
     assessments: {
       list: () =>
-        apiJson<Assessment[]>(`${options.baseUrl}/assessments`, { headers: headers() })
+        apiJson<Assessment[]>(`${options.baseUrl}/assessments`, {
+          headers: authHeaders(options.accessToken)
+        })
     },
     projects: {
-      list: () => apiJson<Project[]>(`${options.baseUrl}/projects`, { headers: headers() })
+      list: () =>
+        apiJson<Project[]>(`${options.baseUrl}/projects`, {
+          headers: authHeaders(options.accessToken)
+        })
     },
     ai: {
       ask: (message: string) =>
         apiJson<AIResponse>(`${options.baseUrl}/ai/chat`, {
           method: "POST",
-          headers: headers(),
+          headers: authHeaders(options.accessToken),
           body: JSON.stringify({ message })
         })
     }

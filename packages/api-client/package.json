@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "dependencies": {
-    "@skillseta/types": "workspace:*",
-    "@skillseta/utils": "workspace:*"
+    "@skillseta/types": "file:../types",
+    "@skillseta/utils": "file:../utils"
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
